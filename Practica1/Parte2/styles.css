@@ -63,6 +63,10 @@ header button {
     height: 3em;
 }
 
+.doctor button:hover {
+    background-color: #558ee4;
+}
+
 .comment-section {
     display: flex;
     flex-direction: row;
