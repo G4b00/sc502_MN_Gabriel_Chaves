@@ -16,7 +16,7 @@ body {
 }
 
 .content {
-    width: 30%;
+    width: 40vh;
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -33,7 +33,9 @@ form {
 }
 
 .logo {
-    width: 100%;
+    margin: 0 auto;
+    max-width: 400px;
+    width: 70%;
     height: 10%;
 } 
 
@@ -47,7 +49,9 @@ input {
     border-color: gainsboro;
     border-width: 1px;
     border-radius: 3px;
+    border: 1px solid #b1b1b1;
     height: 25px;
+    padding: 15px;
 }
 
 .reset-password {
@@ -63,9 +67,13 @@ input {
 #btnLogin {
     height: 100%;
     width: 100%;
-    background-color: rgb(75, 173, 253);
+    background-color: #347deb;
     border: 0cap;
     border-radius: 3px;
     color: white;
+    cursor: pointer;
 }
 
+#btnLogin:hover {
+    background-color: #558ee4;
+}
