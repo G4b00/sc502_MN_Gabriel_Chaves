@@ -1,0 +1,7 @@
+.survey-item {
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+    }
+    .survey-item:hover {
+        background-color: #f1f1f1;
+    }
