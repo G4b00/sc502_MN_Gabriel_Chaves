@@ -23,7 +23,7 @@
 
                         <?php foreach ($encuestas as $encuesta): ?>
                             <?php if ($encuesta['id_creador'] === $_SESSION['user_id']): ?>
-                                <a href="ver?idEncuesta=1"
+                                <a href="ver/<?php echo $encuesta["id"] ?>"
                                     class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                     <span><?php echo $encuesta['titulo'] ?></span>
                                     <span class="badge rounded-pill bg-primary">Ver resultados</span>
@@ -42,7 +42,7 @@
                     <div class="list-group">
                         <?php foreach ($encuestas as $encuesta): ?>
                             <?php if ($encuesta['id_creador'] != $_SESSION['user_id']): ?>
-                                <a href="#"
+                                <a href="responder/<?php echo $encuesta["id"] ?>"
                                     class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                     <span><?php echo $encuesta['titulo'] ?></span>
                                     <span class="badge rounded-pill bg-success">Responder</span>

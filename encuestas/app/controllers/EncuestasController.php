@@ -16,7 +16,6 @@ class EncuestasController
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $model = new Encuesta();
 
-            // Leer el body como JSON
             $input = json_decode(file_get_contents('php://input'), true);
 
             $idCreador = $_SESSION['user_id'] ?? null;
@@ -24,17 +23,14 @@ class EncuestasController
             $descripcion = $input['descripcion'] ?? '';
             $preguntas = $input['preguntas'] ?? [];
 
-            // Validar
             if (!$idCreador || empty($titulo) || empty($descripcion) || empty($preguntas)) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Todos los campos son obligatorios']);
                 return;
             }
 
-            // Insertar encuesta y preguntas
             $model->crearEncuesta($idCreador, $titulo, $descripcion, $preguntas);
 
-            // Responder con éxito
             http_response_code(201);
             echo json_encode(['message' => 'Encuesta creada correctamente']);
 
@@ -47,6 +43,15 @@ class EncuestasController
     {
         $model = new Encuesta();
         $encuesta = $model->obtenerEncuesta($idEncuesta);
+
+        $preguntas = $encuesta['preguntas'];
+
+        $respuestas = $model->obtenerRespuestas($preguntas);
+
+        $totalRespuestas = $model->getTotalRespuestas($preguntas[0]);
+        // echo json_encode($preguntas);
+        // print_r($respuestas);
+        // echo json_encode($respuestas);
 
         require __DIR__ . "/../views/encuestas/ver/index.php";
 
@@ -82,7 +87,6 @@ class EncuestasController
                     exit;
                 }
 
-                // Guardar respuestas
                 $model->responderEncuesta($idUsuario, $respuestas);
 
                 http_response_code(200);
@@ -93,16 +97,33 @@ class EncuestasController
                 echo json_encode(['error' => 'Ocurrió un error al guardar: ' . $e->getMessage()]);
             }
         } else {
-            // Mostrar vista si es GET
             $encuesta = $model->obtenerEncuesta($idEncuesta);
             require __DIR__ . "/../views/encuestas/responder/index.php";
         }
     }
 
-
-    public function guardarRespuesta()
+    public function eliminar($idEncuesta)
     {
-        $model = new Encuesta();
+        if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
+            http_response_code(405); 
+            echo json_encode(["error" => "Método no permitido"]);
+            return;
+        }
 
+        // $idEncuesta = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+        if ($idEncuesta <= 0) {
+            http_response_code(400);
+            echo json_encode(["success" => false, "error" => "ID de encuesta inválido"]);
+            return;
+        }
+
+        $model = new Encuesta();
+        $model->eliminarEncuesta($idEncuesta);
+
+        http_response_code(200);
+        echo json_encode(["success" => true, "message" => "Encuesta eliminada correctamente"]);
     }
+
+
 }
